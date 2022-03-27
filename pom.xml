@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.scrum-master</groupId>
+  <artifactId>AJ_MavenPassAddOpens_MH_139</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <aspectj.version>1.9.10-SNAPSHOT</aspectj.version>
+    <main-class>de.scrum_master.dummy.Application</main-class>
+  </properties>
+
+  <build>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <!-- IMPORTANT -->
+          <useIncrementalCompilation>false</useIncrementalCompilation>
+          <!--
+          <compilerArgs>
+            <arg>&#45;&#45;add-exports</arg>
+            <arg>java.base/sun.security.x509=ALL-UNNAMED</arg>
+          </compilerArgs>
+          -->
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>dev.aspectj</groupId>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <version>1.13.1</version>
+        <configuration>
+          <!--<showWeaveInfo>true</showWeaveInfo>-->
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <Xlint>ignore</Xlint>
+          <complianceLevel>${maven.compiler.target}</complianceLevel>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <!--<verbose>true</verbose>-->
+          <!--<warn>constructorName,packageDefaultMethod,deprecation,maskedCatchBlocks,unusedLocals,unusedArguments,unusedImport</warn>-->
+          <additionalCompilerArgs>
+            <arg>--add-exports</arg>
+            <arg>java.base/sun.security.x509=ALL-UNNAMED</arg>
+          </additionalCompilerArgs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>aj-compile</id>
+            <!-- IMPORTANT -->
+            <phase>process-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>aj-test-compile</id>
+            <!-- IMPORTANT -->
+            <phase>process-test-sources</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>${aspectj.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>${aspectj.version}</version>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+ 		<!--
+ 			Repeat Central definition from super POM https://maven.apache.org/ref/3.6.3/maven-model-builder/super-pom.html.
+ 			Define it as the first repository to search at, otherwise Maven would always search any other repositories defined
+ 			in the POM or in settings.xml first, slowing down the build, because most artifacts reside at Maven Central. See
+ 			https://maven.apache.org/guides/mini/guide-multiple-repositories.html#repository-order for more details.
+ 		-->
+ 		<repository>
+ 			<id>central</id>
+ 			<name>Central Repository</name>
+ 			<url>https://repo.maven.apache.org/maven2</url>
+ 			<layout>default</layout>
+ 			<snapshots>
+ 				<enabled>false</enabled>
+ 			</snapshots>
+ 			<releases>
+ 				<enabled>true</enabled>
+ 				<updatePolicy>never</updatePolicy>
+ 			</releases>
+ 		</repository>
+ 		<repository>
+ 			<id>ossrh-snapshots</id>
+ 			<name>Sonatype OSSRH snapshots</name>
+ 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+ 			<layout>default</layout>
+ 			<snapshots>
+ 				<enabled>true</enabled>
+ 				<updatePolicy>always</updatePolicy>
+ 			</snapshots>
+ 			<releases>
+ 				<enabled>true</enabled>
+ 				<updatePolicy>never</updatePolicy>
+ 			</releases>
+ 		</repository>
+ 	</repositories>
+
+</project>
